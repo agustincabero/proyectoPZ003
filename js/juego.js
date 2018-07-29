@@ -1,5 +1,5 @@
 // Arreglo que contiene las intrucciones del juego 
-var instrucciones = ['Instrucción 1', 'Instrucción 2', 'Instrucción 3', 'Instrucción 4',];
+var instrucciones = ['Mové tu pokebola utilizando los cursores.', 'Acomoda las piezas de forma tal que tu Pikachu quede completo, como en el ejemplo que ves abajo.', 'Intenta ser siempre el mejor, mejor que nadie más...POKEMON!!!'];
 // Arreglo para ir guardando los movimientos que se vayan realizando
 var movimientos = [];
 
@@ -54,7 +54,7 @@ function chequearSiGano(grilla) {
 
 // Implementar alguna forma de mostrar un cartel que avise que ganaste el juego
 function mostrarCartelGanador() {
-  alert('Ganaste guachin')
+  alert('¡¡¡Ganaste!!! Sos todo un Ash Ketchum.')
 }
 
 /* Función que intercambia dos posiciones en la grilla.
@@ -132,6 +132,47 @@ function moverEnDireccion(direccion) {
     }
 }
 
+// Misma funcion que 'function moverEnDireccion()' pero sin la linea que ejecuta la funcion 'lastMove()' para que no actualice ese valor mientras mezcla.
+function moverEnDireccionMezclado(direccion) {
+  var nuevaFilaPiezaVacia;
+  var nuevaColumnaPiezaVacia;
+
+  // Mueve pieza hacia la abajo, reemplazandola con la blanca
+  if (direccion === codigosDireccion.ABAJO) {
+    nuevaFilaPiezaVacia = filaVacia - 1;
+    nuevaColumnaPiezaVacia = columnaVacia;
+    
+  }
+    
+  // Mueve pieza hacia arriba, reemplazandola con la blanca
+  else if (direccion === codigosDireccion.ARRIBA) {
+    nuevaFilaPiezaVacia = filaVacia + 1;
+    nuevaColumnaPiezaVacia = columnaVacia;
+    
+  }
+    
+  // Mueve pieza hacia la derecha, reemplazandola con la blanca
+  else if (direccion === codigosDireccion.DERECHA) {
+    nuevaFilaPiezaVacia = filaVacia;
+    nuevaColumnaPiezaVacia = columnaVacia - 1;
+  }
+    
+  // Mueve pieza hacia la izquierda, reemplazandola con la blanca
+  else if (direccion === codigosDireccion.IZQUIERDA) {
+    nuevaFilaPiezaVacia = filaVacia;
+    nuevaColumnaPiezaVacia = columnaVacia + 1;
+  }
+
+  /* A continuación se chequea si la nueva posición es válida, si lo es, se intercambia. 
+  Para que esta parte del código funcione correctamente deberás haber implementado 
+  las funciones posicionValida, intercambiarPosicionesGrilla y actualizarPosicionVacia */
+
+    if (posicionValida(nuevaFilaPiezaVacia, nuevaColumnaPiezaVacia)) {
+        intercambiarPosiciones(filaVacia, columnaVacia, nuevaFilaPiezaVacia, nuevaColumnaPiezaVacia);
+        actualizarPosicionVacia(nuevaFilaPiezaVacia, nuevaColumnaPiezaVacia);
+    }
+}
+
 
 //////////////////////////////////////////////////////////
 ////////A CONTINUACIÓN FUNCIONES YA IMPLEMENTADAS.////////
@@ -188,7 +229,8 @@ function intercambiarPosicionesDOM(idPieza1, idPieza2) {
 /* Actualiza la representación visual del último movimiento 
 en la pantalla, representado con una flecha. */
 function actualizarUltimoMovimiento(direccion) {
-  ultimoMov = document.getElementById('flecha');
+  var ultimoMov = document.getElementById('flecha');
+  var cantidadMovimientos = document.getElementById('cantidad-movimientos');
   switch (direccion) {
     case codigosDireccion.ARRIBA:
       ultimoMov.textContent = '↑';
@@ -203,6 +245,7 @@ function actualizarUltimoMovimiento(direccion) {
       ultimoMov.textContent = '←';
       break;
   }
+  cantidadMovimientos.innerText = 'Movimientos realizados: ' + movimientos.length;
 }
 
 /* Esta función permite agregar una instrucción a la lista
@@ -229,7 +272,7 @@ function mezclarPiezas(veces) {
     ];
 
   var direccion = direcciones[Math.floor(Math.random() * direcciones.length)];
-  moverEnDireccion(direccion);
+  moverEnDireccionMezclado(direccion);
 
   setTimeout(function() {
       mezclarPiezas(veces - 1);
