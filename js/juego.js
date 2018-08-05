@@ -132,48 +132,6 @@ function moverEnDireccion(direccion) {
     }
 }
 
-// Misma funcion que 'function moverEnDireccion()' pero sin la linea que ejecuta la funcion 'lastMove()' para que no actualice ese valor mientras mezcla.
-function moverEnDireccionMezclado(direccion) {
-  var nuevaFilaPiezaVacia;
-  var nuevaColumnaPiezaVacia;
-
-  // Mueve pieza hacia la abajo, reemplazandola con la blanca
-  if (direccion === codigosDireccion.ABAJO) {
-    nuevaFilaPiezaVacia = filaVacia - 1;
-    nuevaColumnaPiezaVacia = columnaVacia;
-    
-  }
-    
-  // Mueve pieza hacia arriba, reemplazandola con la blanca
-  else if (direccion === codigosDireccion.ARRIBA) {
-    nuevaFilaPiezaVacia = filaVacia + 1;
-    nuevaColumnaPiezaVacia = columnaVacia;
-    
-  }
-    
-  // Mueve pieza hacia la derecha, reemplazandola con la blanca
-  else if (direccion === codigosDireccion.DERECHA) {
-    nuevaFilaPiezaVacia = filaVacia;
-    nuevaColumnaPiezaVacia = columnaVacia - 1;
-  }
-    
-  // Mueve pieza hacia la izquierda, reemplazandola con la blanca
-  else if (direccion === codigosDireccion.IZQUIERDA) {
-    nuevaFilaPiezaVacia = filaVacia;
-    nuevaColumnaPiezaVacia = columnaVacia + 1;
-  }
-
-  /* A continuación se chequea si la nueva posición es válida, si lo es, se intercambia. 
-  Para que esta parte del código funcione correctamente deberás haber implementado 
-  las funciones posicionValida, intercambiarPosicionesGrilla y actualizarPosicionVacia */
-
-    if (posicionValida(nuevaFilaPiezaVacia, nuevaColumnaPiezaVacia)) {
-        intercambiarPosiciones(filaVacia, columnaVacia, nuevaFilaPiezaVacia, nuevaColumnaPiezaVacia);
-        actualizarPosicionVacia(nuevaFilaPiezaVacia, nuevaColumnaPiezaVacia);
-    }
-}
-
-
 //////////////////////////////////////////////////////////
 ////////A CONTINUACIÓN FUNCIONES YA IMPLEMENTADAS.////////
 /////////NO TOCAR A MENOS QUE SEPAS LO QUE HACES//////////
@@ -272,7 +230,8 @@ function mezclarPiezas(veces) {
     ];
 
   var direccion = direcciones[Math.floor(Math.random() * direcciones.length)];
-  moverEnDireccionMezclado(direccion);
+  moverEnDireccion(direccion);
+  movimientos = [];
 
   setTimeout(function() {
       mezclarPiezas(veces - 1);
